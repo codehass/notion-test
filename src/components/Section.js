@@ -77,17 +77,17 @@ function Section({ sideBarOpen }) {
 	return (
 		<section
 			className={`${
-				sideBarOpen ? "w-4/5" : "w-[95%] mx-auto"
+				sideBarOpen ? "md:w-4/5" : "w-[95%] mx-auto"
 			} h-full flex flex-col gap-10`}
 		>
 			<Header />
-			<main className="w-3/4 flex flex-col gap-1 item-center justify-center mx-auto">
+			<main className="w-11/12 md:w-3/4 flex flex-col gap-1 item-center justify-center mx-auto">
 				<BarHeader />
 				<div className="mt-5 mb-6">
-					<p className="text-3xl pb-4 mb-5 font-bold border-b border-gray-300">
+					<p className="text-2xl md:text-3xl pb-4 mb-5 font-bold border-b border-gray-300">
 						Front-end developer test project
 					</p>
-					<p className="text-gray-600">
+					<p className="text-sm md:text-base text-gray-600">
 						Your goal is to make a page that looks exactly like this one, and
 						has tha ability to create H1 text simply by typing / the H1, the
 						typing text, and hitting enter.
