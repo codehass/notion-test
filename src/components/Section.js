@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import Header from "./Header";
 import TextElement from "./TextElement";
 import InputForm from "./InputForm";
+import BarHeader from "./BarHeader";
 
 function Section({ sideBarOpen }) {
 	const [block, setBlock] = useState("p");
@@ -80,7 +81,18 @@ function Section({ sideBarOpen }) {
 			} h-full flex flex-col gap-10`}
 		>
 			<Header />
-			<main className="w-4/5 flex flex-col gap-1 item-center justify-center mx-auto">
+			<main className="w-3/4 flex flex-col gap-1 item-center justify-center mx-auto">
+				<BarHeader />
+				<div className="mt-5 mb-6">
+					<p className="text-3xl pb-4 mb-5 font-bold border-b border-gray-300">
+						Front-end developer test project
+					</p>
+					<p className="text-gray-600">
+						Your goal is to make a page that looks exactly like this one, and
+						has tha ability to create H1 text simply by typing / the H1, the
+						typing text, and hitting enter.
+					</p>
+				</div>
 				<div className="content flex flex-col gap-2 mb-2">
 					{data.map((el, index) => (
 						<TextElement
