@@ -52,6 +52,13 @@ function App() {
 						</div>
 					</div>
 				</header>
+				<main className="w-4/5 flex item-center justify-center mx-auto">
+					<input
+						type="text"
+						placeholder="Type / for blocks, @ to link docs or people"
+						className="w-11/12 focus:border-none outline-none"
+					/>
+				</main>
 			</section>
 		</div>
 	);
