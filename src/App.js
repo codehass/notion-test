@@ -2,10 +2,7 @@ import { useState } from "react";
 import { BsBook } from "react-icons/bs";
 import { FaChevronDown } from "react-icons/fa6";
 import { FiUnlock } from "react-icons/fi";
-import {
-	MdKeyboardDoubleArrowRight,
-	MdKeyboardDoubleArrowLeft,
-} from "react-icons/md";
+import SideBar from "./components/SideBar";
 
 function App() {
 	const [sideBarOpen, setSideBarOpen] = useState(true);
@@ -16,28 +13,11 @@ function App() {
 
 	return (
 		<div className="flex w-full h-screen">
-			{
-				<div
-					className={`bg-red-200 ${
-						sideBarOpen ? "w-1/5" : "w-10"
-					} h-full flex flex-col`}
-				>
-					<button className="flex justify-end items-center p-3">
-						<button type="button" onClick={handleSideBase}>
-							{sideBarOpen ? (
-								<MdKeyboardDoubleArrowLeft />
-							) : (
-								<MdKeyboardDoubleArrowRight />
-							)}
-						</button>
-					</button>
-					{sideBarOpen && <div>Content</div>}
-				</div>
-			}
+			<SideBar sideBarOpen={sideBarOpen} handleSideBase={handleSideBase} />
 
 			<section
 				className={`${
-					sideBarOpen ? "w-4/5" : "w-[90%] mx-auto"
+					sideBarOpen ? "w-4/5" : "w-[95%] mx-auto"
 				} h-full flex flex-col gap-4`}
 			>
 				<header className="flex justify-between p-2">
