@@ -11,7 +11,7 @@ function SideBar({ sideBarOpen, handleSideBase }) {
 				sideBarOpen ? "w-1/5" : "w-10"
 			} h-full flex flex-col`}
 		>
-			<button className="flex justify-end items-center p-3">
+			<div className="flex justify-end items-center p-3">
 				<button type="button" onClick={handleSideBase}>
 					{sideBarOpen ? (
 						<MdKeyboardDoubleArrowLeft />
@@ -19,7 +19,7 @@ function SideBar({ sideBarOpen, handleSideBase }) {
 						<MdKeyboardDoubleArrowRight />
 					)}
 				</button>
-			</button>
+			</div>
 			{sideBarOpen && <div>Content</div>}
 		</div>
 	);
