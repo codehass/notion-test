@@ -51,6 +51,19 @@ function Section({ sideBarOpen }) {
 			}
 		}
 	};
+
+	const handleDelete = (index) => {
+		const updatedElements = [...data];
+		updatedElements.splice(index, 1);
+		setData(updatedElements);
+	};
+
+	const handleTagChange = (index) => {
+		const updatedElements = [...data];
+		updatedElements[index].tag = "h1";
+		setData(updatedElements);
+	};
+
 	const props = {
 		inputRef,
 		block,
@@ -70,7 +83,13 @@ function Section({ sideBarOpen }) {
 			<main className="w-4/5 flex flex-col gap-1 item-center justify-center mx-auto">
 				<div className="content flex flex-col gap-2 mb-2">
 					{data.map((el, index) => (
-						<TextElement el={el} index={index} key={index} />
+						<TextElement
+							el={el}
+							index={index}
+							key={index}
+							onDelete={handleDelete}
+							onTagChange={handleTagChange}
+						/>
 					))}
 				</div>
 
