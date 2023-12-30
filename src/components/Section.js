@@ -59,11 +59,11 @@ function Section({ sideBarOpen }) {
 	};
 
 	const handleTagChange = (id, tag) => {
-		const updatedElements = data.map((el) => {
-			if (el.id === id) {
-				return { ...el, tag: tag === "h1" ? "p" : "h1" };
+		const updatedElements = data.map((item) => {
+			if (item.id === id) {
+				return { ...item, tag: tag === "h1" ? "p" : "h1" };
 			} else {
-				return el;
+				return item;
 			}
 		});
 
@@ -99,7 +99,7 @@ function Section({ sideBarOpen }) {
 					</p>
 				</div>
 				<div className="content flex flex-col gap-2 mb-2">
-					{data.map((el, index) => (
+					{data.map((el) => (
 						<TextElement
 							el={el}
 							key={el.id}
