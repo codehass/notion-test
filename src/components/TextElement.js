@@ -1,34 +1,36 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { PiDotsSixVerticalBold } from "react-icons/pi";
 import EditPopup from "./EditPopup";
 
 function TextElement({ el, handleDelete, onTagChange, data, setData }) {
+	const { id, tag, content } = el;
 	const [popupOpen, setPopupOpen] = useState(false);
-	const [text, setText] = useState(el.content);
+	const [text, setText] = useState(content);
 	const [editableOn, setEditableOn] = useState(false);
+	const popupRef = useRef(null);
 
 	const handleEditPopup = () => {
 		setPopupOpen(!popupOpen);
 	};
 
-	const handleDelete1 = () => {
-		handleDelete(el.id);
+	const handleDeleteElement = () => {
+		handleDelete(id);
 		setPopupOpen(false);
 	};
 
 	const handleChangeTag = () => {
-		onTagChange(el.id, el.tag);
+		onTagChange(id, tag);
 		setPopupOpen(false);
 	};
 
 	const handleTextChange = (e, id) => {
 		const updatedText = e.target.value;
 		setText(updatedText);
-		const updatedElements = data.map((el) => {
-			if (el.id === id) {
-				return { ...el, content: updatedText };
+		const updatedElements = data.map((item) => {
+			if (item.id === id) {
+				return { ...item, content: updatedText };
 			} else {
-				return el;
+				return item;
 			}
 		});
 
@@ -39,71 +41,79 @@ function TextElement({ el, handleDelete, onTagChange, data, setData }) {
 		if (event.key === "Enter") {
 			handleTextChange(event, id);
 		} else if (event.key === "Backspace" && text === "") {
-			// event.preventDefault();
-			// const updatedElements = data.filter((el) => el.id !== id);
-			// setData(updatedElements);
-			handleDelete1(el.id);
+			handleDeleteElement(id);
 		}
 	};
 
-	// const deleteThis = () => {
-	// 	console.log(el.id);
-	// };
-	const props = { handleChangeTag, handleDelete1 };
+	const props = {
+		handleChangeTag,
+		handleDeleteElement,
+		setPopupOpen,
+		popupOpen,
+	};
 
-	return el.tag === "h1" ? (
+	const handleClickOutside = (event) => {
+		if (popupRef.current && !popupRef.current.contains(event.target)) {
+			setPopupOpen(false);
+		}
+	};
+
+	useEffect(() => {
+		document.addEventListener("mousedown", handleClickOutside);
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, []);
+
+	return (
 		<div className="group flex items-center relative">
-			{popupOpen && <EditPopup props={props} el={el} />}
-			<div className="hidden group-hover:block absolute left-[-15px]">
-				<PiDotsSixVerticalBold
-					className="text-gray-600 text-lg cursor-pointer"
-					onClick={handleEditPopup}
-				/>
-			</div>
-			{!editableOn ? (
-				<h1
-					className="text-2xl font-bold font-mono pl-1"
-					onClick={() => setEditableOn(!editableOn)}
-					key={el.id}
-				>
-					{el.content}
-				</h1>
-			) : (
-				<input
-					className="text-2xl font-bold font-mono pl-1"
-					type="text"
-					value={text}
-					onChange={(e) => handleTextChange(e, el.id)}
-					onKeyDown={(e) => keyPress(e, el.id)}
-					id={`${el.id}`}
-				/>
+			{popupOpen && (
+				<div ref={popupRef}>
+					<EditPopup props={props} el={el} />
+				</div>
 			)}
-		</div>
-	) : (
-		<div className="group flex items-center relative">
-			{popupOpen && <EditPopup props={props} el={el} />}
 			<div className="hidden group-hover:block absolute left-[-15px]">
 				<PiDotsSixVerticalBold
 					className="text-gray-600 text-lg cursor-pointer"
 					onClick={handleEditPopup}
 				/>
 			</div>
-			{!editableOn ? (
+
+			{tag === "h1" ? (
+				!editableOn ? (
+					<h1
+						className="text-2xl font-bold font-mono pl-1"
+						onClick={() => setEditableOn(!editableOn)}
+						key={id}
+					>
+						{content}
+					</h1>
+				) : (
+					<input
+						className="text-2xl font-bold font-mono pl-1"
+						type="text"
+						value={text}
+						onChange={(e) => handleTextChange(e, id)}
+						onKeyDown={(e) => keyPress(e, id)}
+						id={`${id}`}
+					/>
+				)
+			) : !editableOn ? (
 				<p
 					className="font-mono pl-1"
 					onClick={() => setEditableOn(!editableOn)}
-					key={el.id}
+					key={id}
 				>
-					{el.content}
+					{content}
 				</p>
 			) : (
 				<input
-					id={`${el.id}`}
+					id={`${id}`}
 					className="font-mono pl-1"
 					type="text"
 					value={text}
-					onChange={(e) => handleTextChange(e, el.id)}
-					onKeyDown={(e) => keyPress(e, el.id)}
+					onChange={(e) => handleTextChange(e, id)}
+					onKeyDown={(e) => keyPress(e, id)}
 				/>
 			)}
 		</div>
