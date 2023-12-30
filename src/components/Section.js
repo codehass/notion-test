@@ -3,6 +3,7 @@ import Header from "./Header";
 import TextElement from "./TextElement";
 import InputForm from "./InputForm";
 import BarHeader from "./BarHeader";
+import uuid4 from "uuid4";
 
 function Section({ sideBarOpen }) {
 	const [block, setBlock] = useState("p");
@@ -14,7 +15,7 @@ function Section({ sideBarOpen }) {
 	const handleInputChange = (e) => {
 		const value = e.target.value;
 		// Check if the input starts with "/"
-		if (value.startsWith("/1")) {
+		if (value.startsWith("/")) {
 			setShowBlockPopup(true);
 		} else {
 			setShowBlockPopup(false);
@@ -40,28 +41,32 @@ function Section({ sideBarOpen }) {
 	const handleKeyPress = (event) => {
 		if (event.key === "Enter") {
 			event.preventDefault();
-			if (inputValue !== "") {
-				const newInput = {
-					tag: block,
-					content: inputValue,
-				};
+			const newInput = {
+				id: uuid4(),
+				tag: block,
+				content: inputValue,
+			};
 
-				setData((prevData) => [...prevData, newInput]);
-				setInputValue("");
-				setBlock("p");
-			}
+			setData((prevData) => [...prevData, newInput]);
+			setInputValue("");
+			setBlock("p");
 		}
 	};
 
-	const handleDelete = (index) => {
-		const updatedElements = [...data];
-		updatedElements.splice(index, 1);
+	const handleDelete = (id) => {
+		const updatedElements = data.filter((el) => el.id !== id);
 		setData(updatedElements);
 	};
 
-	const handleTagChange = (index) => {
-		const updatedElements = [...data];
-		updatedElements[index].tag = "h1";
+	const handleTagChange = (id, tag) => {
+		const updatedElements = data.map((el) => {
+			if (el.id === id) {
+				return { ...el, tag: tag === "h1" ? "p" : "h1" };
+			} else {
+				return el;
+			}
+		});
+
 		setData(updatedElements);
 	};
 
@@ -97,10 +102,11 @@ function Section({ sideBarOpen }) {
 					{data.map((el, index) => (
 						<TextElement
 							el={el}
-							index={index}
-							key={index}
-							onDelete={handleDelete}
+							key={el.id}
+							handleDelete={handleDelete}
 							onTagChange={handleTagChange}
+							setData={setData}
+							data={data}
 						/>
 					))}
 				</div>
